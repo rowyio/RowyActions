@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import {db} from "./firebaseConfig";
+import {db} from "../firebaseConfig";
 import validateAction from "./actionValidation";
 type ActionData = {
     ref: {
@@ -13,9 +13,9 @@ type ActionData = {
     action: "run" | "redo" | "undo";
   };
 
-const callableActionWrapper=(
+const callableAction=(
     actionScript:(args:{callableData:ActionData, context: functions.https.CallableContext, row:any})=>
-        Promise<{success:boolean, message:string}>) =>
+    {success:boolean, message:string}|Promise<{success:boolean, message:string}>) =>
   functions.https.onCall(async (callableData: ActionData, context: functions.https.CallableContext) => {
     try {
       const {ref, column, schemaDocPath} = callableData;
@@ -38,4 +38,4 @@ const callableActionWrapper=(
     }
   });
 
-export default callableActionWrapper;
+export default callableAction;
