@@ -14,7 +14,7 @@ type ActionData = {
   };
 
 const callableAction=(
-    actionScript:(args:{callableData:ActionData, context: functions.https.CallableContext, row:any})=>
+    actionScript:(args:{callableData:ActionData, context: functions.https.CallableContext, row:FirebaseFirestore.DocumentData})=>
     {success:boolean, message:string}|Promise<{success:boolean, message:string}>) =>
   functions.https.onCall(async (callableData: ActionData, context: functions.https.CallableContext) => {
     try {
@@ -26,6 +26,7 @@ const callableAction=(
       ]);
       const row = rowSnapshot.data();
       // preforms validation of the required conditions for action to run
+      if(!row){throw Error('Row is undefined')}
       validateAction({context, row, schemaSnapshot, column});
       const result = await actionScript({callableData, context, row});
       return result;

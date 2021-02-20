@@ -17,10 +17,10 @@ const hasAnyAuthorizedRole = (
 
 /**
    * checks for required but missing fields
-   * @param {any} row document snapshot data
+   * @param {FirebaseFirestore.DocumentData} row document snapshot data
    * @return {string[]} an array of field keys missing from the row
    */
-const missingFieldsReducer = (row: any) => (missingFields: string[], requiredField: string) => {
+const missingFieldsReducer = (row: FirebaseFirestore.DocumentData) => (missingFields: string[], requiredField: string) => {
   if (row[requiredField] === undefined || row[requiredField] === null) {
     return [...missingFields, requiredField];
   } else return missingFields;
@@ -28,7 +28,7 @@ const missingFieldsReducer = (row: any) => (missingFields: string[], requiredFie
 
 const validateAction = ({context, row, schemaSnapshot, column}:{
       context:functions.https.CallableContext,
-      row:any,
+      row:FirebaseFirestore.DocumentData,
       schemaSnapshot:FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
       column: {key: string}
       })=>{
