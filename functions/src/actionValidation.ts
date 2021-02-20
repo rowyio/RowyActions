@@ -46,8 +46,7 @@ const validateAction = ({context, row, schemaSnapshot, column}:{
     throw new Error(
         `${missingRequiredFields.length ===1 ?
           `${missingRequiredFields[0]} field is`:
-          `${missingRequiredFields.join(", ")} fields are`}
-           required and missing from this row`
+          `${missingRequiredFields.join(", ")} fields are`} required and missing from this row`
     );
   }
   return true;
