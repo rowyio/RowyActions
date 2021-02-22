@@ -7,3 +7,7 @@ You can fork this repo then modify the example [here](https://github.com/shamsmo
 
 Deploy the ```/functions``` folder like any other firebase cloud functions project, once the cloud function is successfully deployed you can specify the name in the firetable column configuration.
 
+```
+cd functions
+firebase deploy --only functions --project [projectId]
+```
