@@ -1,7 +1,7 @@
 # Firetable Actions
 
 
-This repo provides a firebase cloud functions project with a callable cloud function wrapper that handles role permission and the required fields validation for firetable action columns.
+This package provides a firebase cloud functions project with a callable cloud function wrapper that handles role permission and the required fields validation for [Firetable](https://github.com/AntlerVC/firetable) action columns.
 
 
 
@@ -13,7 +13,8 @@ yarn add firetable-action
 
 ## Usage
 
-This library can be used as alternative to the default [functions.https.onCall](https://firebase.google.com/docs/reference/functions/providers_https_#oncall) function to deploy callable cloud functions for use in action columns.
+This library can be used as alternative to the default [functions.https.onCall](https://firebase.google.com/docs/reference/functions/providers_https_#oncall) function to deploy a callable cloud functions for use in [Firetable](https://github.com/AntlerVC/firetable) [action fields](https://github.com/AntlerVC/firetable/wiki/Field-Types).
+It can be installed and used in an existing firebase cloud functions project
 
 ```javascript
 
@@ -33,7 +34,7 @@ export ExampleCallableAction = callableAction(async ({row, callableData, context
     action, // latest action state
   });
 
-  // switch statement can be used to perform different event based on the state of the action cell
+  // switch statement can be used to perform different processes based on the state of the action cell
   switch (action) {
     case "run":
     case "undo":
@@ -42,8 +43,8 @@ export ExampleCallableAction = callableAction(async ({row, callableData, context
       break;
   }
 
-
-  return {success: true, // return if the operation was success
+  return {
+    success: true, // return if the operation was success
     message: "hello world ", // message shown in snackbar on the firetable ui after the completion of action
     cellStatus: "greeted", // optional cell label, to indicate the latest state of the cell/row
     newState: "redo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
@@ -58,7 +59,7 @@ export ExampleCallableAction = callableAction(async ({row, callableData, context
 
 ## Demo
 
-You can clone this repo then modify the example [here](https://github.com/shamsmosowi/FiretableActions/blob/master/functions/src/index.ts).
+To experiment with this package you can clone this repo then modify the example [here](https://github.com/shamsmosowi/FiretableActions/blob/master/functions/src/index.ts).
 
 ```
 git clone https://github.com/shamsmosowi/FiretableActions
