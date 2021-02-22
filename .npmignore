@@ -1,4 +1,4 @@
-funtions/
-node_modules/
+functions/
 .firebaserc
 firebase.json
+*.tgz
