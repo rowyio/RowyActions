@@ -7,8 +7,8 @@ import * as functions from "firebase-functions";
  * @return {boolean} boolean
  */
 const hasAnyAuthorizedRole = (
-    authorizedRoles: string[],
-    context: functions.https.CallableContext
+  authorizedRoles: string[],
+  context: functions.https.CallableContext
 ) => {
   if (!context.auth || !context.auth.token.roles) return false;
   const userRoles = context.auth.token.roles as string[];
@@ -16,37 +16,51 @@ const hasAnyAuthorizedRole = (
 };
 
 /**
-   * checks for required but missing fields
-   * @param {FirebaseFirestore.DocumentData} row document snapshot data
-   * @return {string[]} an array of field keys missing from the row
-   */
-const missingFieldsReducer = (row: FirebaseFirestore.DocumentData) => (missingFields: string[], requiredField: string) => {
+ * checks for required but missing fields
+ * @param {FirebaseFirestore.DocumentData} row document snapshot data
+ * @return {string[]} an array of field keys missing from the row
+ */
+const missingFieldsReducer = (row: FirebaseFirestore.DocumentData) => (
+  missingFields: string[],
+  requiredField: string
+) => {
   if (row[requiredField] === undefined || row[requiredField] === null) {
     return [...missingFields, requiredField];
   } else return missingFields;
 };
 
-const validateAction = ({context, row, schemaSnapshot, column}:{
-      context:functions.https.CallableContext,
-      row:FirebaseFirestore.DocumentData,
-      schemaSnapshot:FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
-      column: {key: string}
-      })=>{
-  const {requiredRoles, requiredFields} = schemaSnapshot.get(`columns.${column.key}.config`);
+const validateAction = ({
+  context,
+  row,
+  schemaSnapshot,
+  column,
+}: {
+  context: functions.https.CallableContext;
+  row: FirebaseFirestore.DocumentData;
+  schemaSnapshot: FirebaseFirestore.DocumentSnapshot<
+    FirebaseFirestore.DocumentData
+  >;
+  column: { key: string };
+}) => {
+  const { requiredRoles, requiredFields } = schemaSnapshot.get(
+    `columns.${column.key}.config`
+  );
   if (!requiredRoles || requiredRoles.length === 0) {
     throw Error("You need to specify at least one role to run this action");
   }
   if (!hasAnyAuthorizedRole(requiredRoles, context)) {
     throw Error("You don't have the required roles to run this action");
   }
-  const missingRequiredFields = requiredFields ?
-          requiredFields.reduce(missingFieldsReducer(row), []) :
-          [];
+  const missingRequiredFields = requiredFields
+    ? requiredFields.reduce(missingFieldsReducer(row), [])
+    : [];
   if (missingRequiredFields.length > 0) {
     throw new Error(
-        `${missingRequiredFields.length ===1 ?
-          `${missingRequiredFields[0]} field is`:
-          `${missingRequiredFields.join(", ")} fields are`} required and missing from this row`
+      `${
+        missingRequiredFields.length === 1
+          ? `${missingRequiredFields[0]} field is`
+          : `${missingRequiredFields.join(", ")} fields are`
+      } required and missing from this row`
     );
   }
   return true;

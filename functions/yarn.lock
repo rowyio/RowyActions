@@ -1218,6 +1218,15 @@ firebase-functions@^3.13.1:
     express "^4.17.1"
     lodash "^4.17.14"
 
+firetable-actions@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/firetable-actions/-/firetable-actions-1.0.1.tgz#6965afeef34bf3114e3173e971fa55fff4843d6a"
+  integrity sha512-oN9jxcW/bVRSrlLWUHdJNLMxySQz9ywIYbpYdf9YYsYsQAC0vnTnW3OVGPsKxSIuAFa1wwkVJn6hdh/BvTa9Iw==
+  dependencies:
+    "@google-cloud/firestore" "^4.9.4"
+    firebase-admin "^9.5.0"
+    firebase-functions "^3.13.1"
+
 flat-cache@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.0.4.tgz#61b0338302b2fe9f957dcc32fc2a87f1c3048b11"
