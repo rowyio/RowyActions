@@ -1,6 +1,10 @@
+import * as FirebaseFirestore from "@google-cloud/firestore";
 import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
 import {db} from "../firebaseConfig";
 import validateAction from "./actionValidation";
+export const serverTimestamp = admin.firestore.FieldValue.serverTimestamp;
+
 type ActionData = {
     ref: {
       id: string;
@@ -13,9 +17,15 @@ type ActionData = {
     action: "run" | "redo" | "undo";
   };
 
+type ActionResponse ={
+  success:boolean;
+  message:string;
+  cellStatus?:string;
+  newState:"redo"|"undo"|"disabled";
+}
 const callableAction=(
     actionScript:(args:{callableData:ActionData, context: functions.https.CallableContext, row:FirebaseFirestore.DocumentData})=>
-    {success:boolean, message:string}|Promise<{success:boolean, message:string}>) =>
+    ActionResponse|Promise<ActionResponse>) =>
   functions.https.onCall(async (callableData: ActionData, context: functions.https.CallableContext) => {
     try {
       const {ref, column, schemaDocPath} = callableData;
@@ -26,10 +36,23 @@ const callableAction=(
       ]);
       const row = rowSnapshot.data();
       // preforms validation of the required conditions for action to run
-      if(!row){throw Error('Row is undefined')}
+      if (!row) {
+        throw Error("Row is undefined");
+      }
       validateAction({context, row, schemaSnapshot, column});
       const result = await actionScript({callableData, context, row});
-      return result;
+      if (result.success) {
+        return {
+          ...result,
+          cellValue: {
+            redo: result.newState === "redo",
+            status: result.cellStatus,
+            completedAt: serverTimestamp(),
+            ranBy: context.auth!.token.email,
+            undo: result.newState === "undo",
+          },
+        };
+      } return result;
     } catch (error) {
       return {
         success: false,
