@@ -1,0 +1,26 @@
+{
+  "name": "firetable-actions",
+  "version": "1.0.2",
+  "description": "Cloud function callable wrapper for streamlining action columns",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "https://github.com/shamsmosowi/FiretableActions.git",
+  "author": "Shams Mosowi <shams.mosowi@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^4.9.4",
+    "firebase-admin": "^9.5.0",
+    "firebase-functions": "^3.13.1"
+  }
+}
