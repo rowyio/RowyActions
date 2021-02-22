@@ -20,7 +20,7 @@ type ActionResponse = {
   success: boolean;
   message: string;
   cellStatus?: string;
-  newState: "redo" | "undo" | "disabled";
+  newState?: "redo" | "undo" | "disabled";
 };
 const callableAction = (
   actionScript: (args: {
