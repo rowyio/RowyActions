@@ -22,7 +22,7 @@ import * as admin from "firebase-admin";
 admin.initializeApp();
 
 import callableAction from "firetable-actions";
-export ExampleCallableAction = = callableAction(async ({row, callableData, context}) =>{
+export ExampleCallableAction = callableAction(async ({row, callableData, context}) =>{
   const {ref, column, schemaDocPath, action} = callableData;
   console.log({
     row, // docSnapshot of the called column
