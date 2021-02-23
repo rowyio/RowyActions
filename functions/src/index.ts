@@ -2,17 +2,33 @@ import * as admin from "firebase-admin";
 admin.initializeApp();
 import callableAction from "firetable-actions";
 
+const sendInviteEmail = (firstName:string, email:string)=>{
+  console.log(`invite sent to ${firstName}, ${email}`)
+}
 const auth = admin.auth()
 
 export const SendUserInvite = callableAction(async ({row, callableData}) =>{
   const {action} = callableData;
+  const {firstName,lastName,email,roles} =row
   // switch statement can be used to perform different event based on the state of the action cell
   switch (action) {
     case "run":
     // create firebase user    
-    // set users roles
+    auth.importUsers([
+      {
+        uid: 'some-uid',
+        displayName: `${firstName} ${lastName}`,
+        email,
+        // set users roles
+        customClaims: { roles:roles},
+        // User with Google provider.
+        providerData: [
+        ],
+      },
+    ])
     case "redo":
-    // send/resend invite email 
+      // send/resend invite email 
+      sendInviteEmail(firstName,email)
     break;
     case "undo":
     // this case is never reached because 
@@ -50,6 +66,6 @@ export const suspendUser = callableAction(async ({row, callableData}) =>{
         newState: "redo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
       };
     default:
-      return {success: false, message:'Undefined state reached',  newState: "redo",}
+      return {success: false, message:'Reached undefined state',  newState: "redo",}
   }
 });
