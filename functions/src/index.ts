@@ -1,10 +1,7 @@
 import * as admin from "firebase-admin";
 admin.initializeApp();
 import callableAction from "firetable-actions";
-
-const sendInviteEmail = (firstName:string, email:string)=>{
-  console.log(`invite sent to ${firstName}, ${email}`)
-}
+import {sendInviteEmail} from './email'
 const auth = admin.auth()
 
 export const SendUserInvite = callableAction(async ({row, callableData}) =>{
@@ -13,17 +10,14 @@ export const SendUserInvite = callableAction(async ({row, callableData}) =>{
   // switch statement can be used to perform different event based on the state of the action cell
   switch (action) {
     case "run":
-    // create firebase user    
+    // create firebase auth user    
     auth.importUsers([
       {
         uid,
         displayName: `${firstName} ${lastName}`,
         email,
         // set users roles
-        customClaims: { roles:roles},
-        // User with Google provider.
-        providerData: [
-        ],
+        customClaims: {roles},
       },
     ])
     case "redo":
@@ -60,10 +54,10 @@ export const suspendUser = callableAction(async ({row, callableData}) =>{
         newState: "undo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
       };
     case "undo":
-      auth.updateUser(uid, {disabled:true})
+      auth.updateUser(uid, {disabled:false})
       return {success: true, // return if the operation was success
         message: `${firstName}'s account has been re-enabled`, // message shown in snackbar on the firetable ui after the completion of action
-        cellStatus: "invited", // optional cell label, to indicate the latest state of the cell/row
+        cellStatus: "active", // optional cell label, to indicate the latest state of the cell/row
         newState: "redo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
       };
     default:
