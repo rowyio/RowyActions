@@ -13,11 +13,10 @@ yarn add firetable-action
 
 ## Usage
 
-This library can be used as alternative to the default [functions.https.onCall](https://firebase.google.com/docs/reference/functions/providers_https_#oncall) function to deploy a callable cloud functions for use in [Firetable](https://github.com/AntlerVC/firetable) [action fields](https://github.com/AntlerVC/firetable/wiki/Field-Types).
+This library can be used as an alternative to directly using [functions.https.onCall](https://firebase.google.com/docs/reference/functions/providers_https_#oncall) function to deploy a callable cloud functions for use in [Firetable](https://github.com/AntlerVC/firetable) [action fields](https://github.com/AntlerVC/firetable/wiki/Field-Types).
 It can be installed and used in an existing firebase cloud functions project
 
-```javascript
-
+```javascript 
 // import and intialize firebase admin SDK
 import * as admin from "firebase-admin";
 admin.initializeApp();
@@ -45,7 +44,7 @@ export ExampleCallableAction = callableAction(async ({row, callableData, context
 
   return {
     success: true, // return if the operation was success
-    message: "hello world ", // message shown in snackbar on the firetable ui after the completion of action
+    message: "hello world", // message shown in snackbar on the firetable ui after the completion of action
     cellStatus: "greeted", // optional cell label, to indicate the latest state of the cell/row
     newState: "redo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
   };
