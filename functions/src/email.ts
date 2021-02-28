@@ -1,5 +1,8 @@
 // basic email integration
 import * as functions from "firebase-functions";
+
+
+const fs = require('fs')
 const sgMail = require("@sendgrid/mail");
 
 /**
@@ -14,20 +17,13 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 export const sendEmail = sgMail.send
 
 export const sendInviteEmail = (firstName:string, email:string)=>{
-    sendEmail({
-        from:{
-            name:'unicorp',
-            email:'team@unicorp.so'
-        },
-        personalizations:[{
-            to:[{
-                name:firstName,
-                email
-            }],
-            dynamic_template_data:{firstName}
-        }],
-        templateId:'',
-        subject:''
-    })
-    console.log(`invite sent to ${firstName}, ${email}`)
+    const htmlTemplate = fs.readFileSync('./inviteTemplateEmail.html')
+   return sendEmail(
+        {   "to": "test@example.com",
+            "from": "test@example.com",
+            "subject": "Firetable Invite",
+            "html": htmlTemplate,
+          }
+    )
+   
 }
