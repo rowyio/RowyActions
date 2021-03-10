@@ -3,12 +3,10 @@
 
 This package provides a firebase cloud functions project with a callable cloud function wrapper that handles role permission and the required fields validation for [Firetable](https://github.com/AntlerVC/firetable) action columns.
 
-
-
 ## Installation
 
 ```
-yarn add firetable-action
+yarn add firetable-actions
 ```
 
 ## Usage
