@@ -50,16 +50,18 @@ const callableAction = (
         validateAction({ context, row, schemaSnapshot, column });
         const result = await actionScript({ callableData, context, row });
         if (result.success) {
+          const cellValue = {
+            redo: result.newState === "redo",
+            status: result.cellStatus,
+            completedAt: serverTimestamp(),
+            ranBy: context.auth!.token.email,
+            undo: result.newState === "undo",
+          }
+         // await db.doc(ref.path).update({[column.key]:cellValue})
           return {
             ...result,
-            cellValue: {
-              redo: result.newState === "redo",
-              status: result.cellStatus,
-              completedAt: serverTimestamp(),
-              ranBy: context.auth!.token.email,
-              undo: result.newState === "undo",
-            },
-          };
+            cellValue,
+          }
         }
         return result;
       } catch (error) {
