@@ -25,6 +25,6 @@ module.exports = {
   ],
   rules: {
     "quotes": ["error", "double"],
-    "max-len": ["error", {"code": 220}],
+    "max-len": "off",
   },
 };

@@ -1253,10 +1253,10 @@ firebase-functions@^3.13.1:
     express "^4.17.1"
     lodash "^4.17.14"
 
-firetable-actions@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/firetable-actions/-/firetable-actions-1.0.4.tgz#49d2b87cc5034527c9638e3f6cf453a68eb27375"
-  integrity sha512-UtSQQE0SYs3mGzSnvAuYT+ZAxRLzj3keA3hHiScGILRosX9LJgL8d0BurV843Ov0MPpZbZ5H0ltb6gJYt5MPcQ==
+firetable-actions@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/firetable-actions/-/firetable-actions-1.1.0.tgz#4617e28b6ca69c74d5587f912ab0a105557df55a"
+  integrity sha512-uMkThoJWjntt+fQrYgOORiV8Iu29zQJj7MyCcJeAqHPnaKJN0cnaiXk69T8k8kb2nVZYSZP4pslLxiW7zZp2nA==
   dependencies:
     "@google-cloud/firestore" "^4.9.4"
     firebase-admin "^9.5.0"

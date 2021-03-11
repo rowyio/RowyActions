@@ -1,29 +1,37 @@
 // basic email integration
 import * as functions from "firebase-functions";
+import {htmlTemplate} from "./inviteTemplateEmail";
 
-
-const fs = require('fs')
 const sgMail = require("@sendgrid/mail");
 
 /**
  * Sendgrid requires an api key to be used you can signup to Sendgrid and set api key using firebase cli
  * $ firebase functions:config:set send_grid.key="SG API KEY"
  **/
-const env = functions.config()
+const env = functions.config();
+
+
+const firetableUrl = `YOUR_FIRETABLE_APP_URL`
 sgMail.setApiKey(env.send_grid.key);
-// specify templating format
-sgMail.setSubstitutionWrappers("{{", "}}");
 
-export const sendEmail = sgMail.send
+export const sendInviteEmail = async (firstName:string, email:string)=>{
+  const dynamicFields :any = {firstName, email, buttonLink: `https://${firetableUrl}/auth`};
+  const html = Object.keys(dynamicFields).reduce((acc, currKey)=>{
+    return acc.replace(`{{${currKey}}}`, dynamicFields[currKey]);
+  }, htmlTemplate);
+  const msg = {"to": email,
+    "from": "welcome@firetable.cloud",
+    "subject": "Firetable Invite",
+    html,
 
-export const sendInviteEmail = (firstName:string, email:string)=>{
-    const htmlTemplate = fs.readFileSync('./inviteTemplateEmail.html')
-   return sendEmail(
-        {   "to": "test@example.com",
-            "from": "test@example.com",
-            "subject": "Firetable Invite",
-            "html": htmlTemplate,
-          }
-    )
-   
-}
+  };
+  try {
+    await sgMail.send(msg);
+  } catch (error) {
+    console.error(error);
+    if (error.response) {
+      console.error(JSON.stringify(error.response.body));
+      throw Error(JSON.stringify(error.response.body));
+    }
+  }
+};
