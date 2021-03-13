@@ -1,4 +1,11 @@
-// basic email integration
+
+
+/**
+ * SendGrid Email integration
+ *
+ */
+
+
 import * as functions from "firebase-functions";
 import {htmlTemplate} from "./inviteTemplateEmail";
 
@@ -11,7 +18,17 @@ const sgMail = require("@sendgrid/mail");
 const env = functions.config();
 
 
-const firetableUrl = `YOUR_FIRETABLE_APP_URL`
+/**
+ * specify the url of your firetable web app bellow
+ * eg demo.firetable.cloud or myfiretable.web.app
+ */
+const firetableUrl = "YOUR_FIRETABLE_APP_URL";
+
+/**
+ * Before sending emails through sendGrid you'll need to authorize sendGrid to send emails with your domain
+ * Specify the authorized domain you would like to use below
+ */
+const sendGridAuthorizedDomain = "firetable.cloud";
 sgMail.setApiKey(env.send_grid.key);
 
 export const sendInviteEmail = async (firstName:string, email:string)=>{
@@ -20,8 +37,8 @@ export const sendInviteEmail = async (firstName:string, email:string)=>{
     return acc.replace(`{{${currKey}}}`, dynamicFields[currKey]);
   }, htmlTemplate);
   const msg = {"to": email,
-    "from": "welcome@firetable.cloud",
-    "subject": "Firetable Invite",
+    "from": `welcome@${sendGridAuthorizedDomain}`,
+    "subject": "Firetable Account Invite",
     html,
 
   };
