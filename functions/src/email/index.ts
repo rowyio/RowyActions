@@ -6,6 +6,19 @@
  */
 
 
+/**
+ * specify the url of your firetable web app bellow
+ * eg demo.firetable.cloud or myfiretable.web.app
+ */
+const firetableUrl = "demo.firetable.cloud";
+
+/**
+  * Before sending emails through sendGrid you'll need to authorize sendGrid to send emails with your domain
+  * Specify the authorized domain you would like to use below
+  */
+const sendGridAuthorizedDomain = "firetable.cloud";
+
+
 import * as functions from "firebase-functions";
 import {htmlTemplate} from "./inviteTemplateEmail";
 
@@ -17,18 +30,6 @@ const sgMail = require("@sendgrid/mail");
  **/
 const env = functions.config();
 
-
-/**
- * specify the url of your firetable web app bellow
- * eg demo.firetable.cloud or myfiretable.web.app
- */
-const firetableUrl = "YOUR_FIRETABLE_APP_URL";
-
-/**
- * Before sending emails through sendGrid you'll need to authorize sendGrid to send emails with your domain
- * Specify the authorized domain you would like to use below
- */
-const sendGridAuthorizedDomain = "firetable.cloud";
 sgMail.setApiKey(env.send_grid.key);
 
 export const sendInviteEmail = async (firstName:string, email:string)=>{
