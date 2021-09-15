@@ -49,21 +49,62 @@ const callableAction = (
         }
         validateAction({ context, row, schemaSnapshot, column });
         const result = await actionScript({ callableData, context, row });
-        if (result.success) {
+        if (missingRequiredFields.length > 0) {
+          throw new Error(
+            `Missing required fields:${missingRequiredFields.join(", ")}`
+          );
+        }
+        const result: {
+          message: string;
+          status: string;
+          success: boolean;
+        } = await eval(
+          `async({row,db, ref,auth,utilFns,actionParams,context})=>{${
+            action === "undo" ? config["undo.script"] : script
+          }}`
+        )({
+          row,
+          db,
+          auth, // utilFns,
+          ref,
+          actionParams, //context
+        });
+        if (result.success || result.status) {
           const cellValue = {
-            redo: result.newState === "redo",
-            status: result.cellStatus,
+            redo: result.success ? config["redo.enabled"] : true,
+            status: result.status,
             completedAt: serverTimestamp(),
-            ranBy: context.auth!.token.email,
-            undo: result.newState === "undo",
+            ranBy: user.email,
+            undo: config["undo.enabled"],
+          };
+          try {
+            const userDoc = await db
+              .collection("/_rowy_/userManagement/users")
+              .doc(user.uid)
+              .get();
+            const userData = userDoc?.get("user");
+    
+            await db.doc(ref.path).update({
+              [column.key]: cellValue,
+              _updatedBy: userData
+                ? {
+                    ...userData,
+                    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                  }
+                : null,
+            });
+          } catch (error) {
+            // if actionScript code deletes the row, it will throw an error when updating the cell
+            console.log(error);
           }
-         // await db.doc(ref.path).update({[column.key]:cellValue})
           return {
             ...result,
-            cellValue,
           }
-        }
-        return result;
+        } else
+          return {
+            success: false,
+            message: result.message,
+          }
       } catch (error) {
         return {
           success: false,
