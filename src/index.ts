@@ -49,26 +49,6 @@ const callableAction = (
         }
         validateAction({ context, row, schemaSnapshot, column });
         const result = await actionScript({ callableData, context, row });
-        if (missingRequiredFields.length > 0) {
-          throw new Error(
-            `Missing required fields:${missingRequiredFields.join(", ")}`
-          );
-        }
-        const result: {
-          message: string;
-          status: string;
-          success: boolean;
-        } = await eval(
-          `async({row,db, ref,auth,utilFns,actionParams,context})=>{${
-            action === "undo" ? config["undo.script"] : script
-          }}`
-        )({
-          row,
-          db,
-          auth, // utilFns,
-          ref,
-          actionParams, //context
-        });
         if (result.success || result.status) {
           const cellValue = {
             redo: result.success ? config["redo.enabled"] : true,
