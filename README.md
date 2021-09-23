@@ -42,7 +42,7 @@ export ExampleCallableAction = callableAction(async ({row, callableData, context
 
   return {
     success: true, // return if the operation was success
-    message: "hello world", // message shown in snackbar on the firetable ui after the completion of action
+    message: "hello world", // message shown in snackbar on Rowy after the completion of action
     cellStatus: "greeted", // optional cell label, to indicate the latest state of the cell/row
     newState: "redo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
   };
