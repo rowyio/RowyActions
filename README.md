@@ -1,7 +1,7 @@
-# Firetable Actions
+# Rowy Actions
 
 
-This package provides a firebase cloud functions project with a callable cloud function wrapper that handles role permission and the required fields validation for [Firetable](https://github.com/AntlerVC/firetable) action columns.
+This package provides a firebase cloud functions project with a callable cloud function wrapper that handles role permission and the required fields validation for [Rowy](https://github.com/rowyio/rowy) action columns.
 
 ## Installation
 
@@ -11,7 +11,7 @@ yarn add firetable-actions
 
 ## Usage
 
-This library can be used as an alternative to directly using [functions.https.onCall](https://firebase.google.com/docs/reference/functions/providers_https_#oncall) function to deploy a callable cloud functions for use in [Firetable](https://github.com/AntlerVC/firetable) [action fields](https://github.com/AntlerVC/firetable/wiki/Field-Types).
+This library can be used as an alternative to directly using [functions.https.onCall](https://firebase.google.com/docs/reference/functions/providers_https_#oncall) function to deploy a callable cloud functions for use in [Rowy](https://github.com/rowyio/rowy) [action fields](https://github.com/rowyio/rowy/wiki/Field-Types).
 It can be installed and used in an existing firebase cloud functions project
 
 ```javascript 
