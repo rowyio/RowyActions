@@ -6,7 +6,7 @@ This package provides a firebase cloud functions project with a callable cloud f
 ## Installation
 
 ```
-yarn add firetable-actions
+yarn add rowy-actions
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ It can be installed and used in an existing firebase cloud functions project
 import * as admin from "firebase-admin";
 admin.initializeApp();
 
-import callableAction from "firetable-actions";
+import callableAction from "rowy-actions";
 export ExampleCallableAction = callableAction(async ({row, callableData, context}) =>{
   const {ref, column, schemaDocPath, action} = callableData;
   console.log({
@@ -56,11 +56,11 @@ export ExampleCallableAction = callableAction(async ({row, callableData, context
 
 ## Demo
 
-To experiment with this package you can clone this repo then modify the example [here](https://github.com/shamsmosowi/FiretableActions/blob/master/functions/src/index.ts).
+To experiment with this package you can clone this repo then modify the example [here](https://github.com/rowyio/RowyActions/blob/master/functions/src/index.ts).
 
 ```
-git clone https://github.com/shamsmosowi/FiretableActions
-cd FiretableActions/functions
+git clone https://github.com/rowyio/RowyActions
+cd RowyActions/functions
 yarn install
 firebase deploy --only functions --project [projectId]
 ```
