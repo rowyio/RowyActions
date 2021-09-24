@@ -7,16 +7,16 @@
 
 
 /**
- * specify the url of your firetable web app bellow
- * eg demo.firetable.cloud or myfiretable.web.app
+ * specify the url of your rowy web app bellow
+ * eg demo.firetable.cloud or myrowy.web.app
  */
-const firetableUrl = "demo.firetable.cloud";
+const rowyUrl = "demo.rowy.app";
 
 /**
   * Before sending emails through sendGrid you'll need to authorize sendGrid to send emails with your domain
   * Specify the authorized domain you would like to use below
   */
-const sendGridAuthorizedDomain = "firetable.cloud";
+const sendGridAuthorizedDomain = "rowy.app";
 
 
 import * as functions from "firebase-functions";
@@ -33,13 +33,13 @@ const env = functions.config();
 sgMail.setApiKey(env.send_grid.key);
 
 export const sendInviteEmail = async (firstName:string, email:string)=>{
-  const dynamicFields :any = {firstName, email, buttonLink: `https://${firetableUrl}/auth`};
+  const dynamicFields :any = {firstName, email, buttonLink: `https://${rowyUrl}/auth`};
   const html = Object.keys(dynamicFields).reduce((acc, currKey)=>{
     return acc.replace(`{{${currKey}}}`, dynamicFields[currKey]);
   }, htmlTemplate);
   const msg = {"to": email,
     "from": `welcome@${sendGridAuthorizedDomain}`,
-    "subject": "Firetable Account Invite",
+    "subject": "rowy Account Invite",
     html,
 
   };

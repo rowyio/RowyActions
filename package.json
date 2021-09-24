@@ -1,11 +1,11 @@
 {
-  "name": "firetable-actions",
-  "version": "1.1.0",
-  "description": "Cloud function callable wrapper for streamlining action columns",
+  "name": "rowy-actions",
+  "version": "1.0.0",
+  "description": "Cloud function callable wrapper for streamlining Rowy action columns",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": "https://github.com/shamsmosowi/FiretableActions.git",
-  "author": "Shams Mosowi <shams.mosowi@gmail.com>",
+  "repository": "https://github.com/rowyio/rowyActions.git",
+  "author": "Shams Mosowi<shams.mosowi@gmail.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
