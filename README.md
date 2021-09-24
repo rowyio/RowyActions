@@ -19,8 +19,9 @@ It can be installed and used in an existing firebase cloud functions project
 import * as admin from "firebase-admin";
 admin.initializeApp();
 
+
 import callableAction from "rowy-actions";
-export ExampleCallableAction = callableAction(async ({row, callableData, context}) =>{
+export const ExampleCallableAction = callableAction(async ({row, callableData, context}) =>{
   const {ref, column, schemaDocPath, action} = callableData;
   console.log({
     row, // docSnapshot of the called column
