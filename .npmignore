@@ -1,4 +1,4 @@
-functions/
+functions/*
 .firebaserc
 firebase.json
 *.tgz
