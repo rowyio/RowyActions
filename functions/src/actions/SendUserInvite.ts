@@ -1,6 +1,6 @@
 
 import {db, auth} from "../firebaseConfig";
-import callableAction from "firetable-actions";
+import callableAction from "rowy-actions";
 import {sendInviteEmail} from "../email";
 
 const randomUid = () =>Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -49,7 +49,7 @@ export const SendUserInvite = callableAction(async ({row, callableData}) =>{
   }
 
   return {success: true, // return if the operation was success
-    message: `An invite was sent to ${row.firstName} on ${row.email}`, // message shown in snackbar on the firetable ui after the completion of action
+    message: `An invite was sent to ${row.firstName} on ${row.email}`, // message shown in snackbar on the rowy ui after the completion of action
     cellStatus: "invited", // optional cell label, to indicate the latest state of the cell/row
     newState: "redo", // "redo" | "undo" | "disabled" are options set the behavior of action button next time it runs
   };

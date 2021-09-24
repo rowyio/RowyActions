@@ -1,6 +1,6 @@
 
 import {auth} from "../firebaseConfig";
-import callableAction from "firetable-actions";
+import callableAction from "rowy-actions";
 
 export const UpdateUserRoles = callableAction(async ({row, callableData}) =>{
   const {action} = callableData;
