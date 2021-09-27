@@ -36,6 +36,9 @@ const callableAction = (
     ) => {
       try {
         const db = admin.firestore();
+        const user = context.auth?.token
+        if(!user) throw new Error("Unauthenticated Request");
+        
         const { ref, column, schemaDocPath } = callableData;
         // fetch the row and the table schema snapshots
         const [schemaSnapshot, rowSnapshot] = await Promise.all([
@@ -49,13 +52,13 @@ const callableAction = (
         }
         validateAction({ context, row, schemaSnapshot, column });
         const result = await actionScript({ callableData, context, row });
-        if (result.success || result.status) {
+        if (result.success || result.cellStatus) {
           const cellValue = {
-            redo: result.success ? config["redo.enabled"] : true,
-            status: result.status,
+            redo: result.newState === "redo",
+            status: result.cellStatus,
             completedAt: serverTimestamp(),
             ranBy: user.email,
-            undo: config["undo.enabled"],
+            undo:result.newState === "undo",
           };
           try {
             const userDoc = await db
@@ -85,7 +88,7 @@ const callableAction = (
             success: false,
             message: result.message,
           }
-      } catch (error) {
+      } catch (error:any) {
         return {
           success: false,
           error,
