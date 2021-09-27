@@ -2,3 +2,4 @@ functions/*
 .firebaserc
 firebase.json
 *.tgz
+node_modules/

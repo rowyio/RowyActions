@@ -5,12 +5,7 @@ import validateAction from "./actionValidation";
 const serverTimestamp = admin.firestore.FieldValue.serverTimestamp;
 
 type ActionData = {
-  ref: {
-    id: string;
-    path: string;
-    parentId: string;
-    tablePath: string;
-  };
+  ref:  FirebaseFirestore.DocumentReference
   schemaDocPath: string; // docPath of
   column: { key: string };
   action: "run" | "redo" | "undo";
@@ -39,7 +34,8 @@ const callableAction = (
         const user = context.auth?.token
         if(!user) throw new Error("Unauthenticated Request");
         
-        const { ref, column, schemaDocPath } = callableData;
+        const {  column, schemaDocPath } = callableData;
+        const ref = db.doc(callableData.ref.path);
         // fetch the row and the table schema snapshots
         const [schemaSnapshot, rowSnapshot] = await Promise.all([
           db.doc(schemaDocPath).get(),
@@ -51,7 +47,7 @@ const callableAction = (
           throw Error("Row is undefined");
         }
         validateAction({ context, row, schemaSnapshot, column });
-        const result = await actionScript({ callableData, context, row });
+        const result = await actionScript({ callableData:{...callableData,ref}, context, row});
         if (result.success || result.cellStatus) {
           const cellValue = {
             redo: result.newState === "redo",
