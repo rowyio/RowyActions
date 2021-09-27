@@ -1,9 +1,8 @@
 /// <reference types="express" />
 import * as FirebaseFirestore from "@google-cloud/firestore";
 import * as functions from "firebase-functions";
-
 declare type ActionData = {
-    ref: FirebaseFirestore.DocumentReference
+    ref: FirebaseFirestore.DocumentReference;
     schemaDocPath: string;
     column: {
         key: string;

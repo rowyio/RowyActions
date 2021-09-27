@@ -1,6 +1,6 @@
 {
   "name": "rowy-actions",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Cloud function callable wrapper for streamlining Rowy action columns",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
