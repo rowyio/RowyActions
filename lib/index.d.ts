@@ -19,5 +19,5 @@ declare const callableAction: (actionScript: (args: {
     callableData: ActionData;
     context: functions.https.CallableContext;
     row: FirebaseFirestore.DocumentData;
-}) => ActionResponse | Promise<ActionResponse>) => functions.TriggerAnnotated & ((req: functions.Request<import("express-serve-static-core").ParamsDictionary>, resp: functions.Response<any>) => void | Promise<void>) & functions.Runnable<any>;
+}) => ActionResponse | Promise<ActionResponse>, runtimeOptions?: functions.RuntimeOptions | undefined) => functions.TriggerAnnotated & ((req: functions.Request<import("express-serve-static-core").ParamsDictionary>, resp: functions.Response<any>) => void | Promise<void>) & functions.Runnable<any>;
 export default callableAction;

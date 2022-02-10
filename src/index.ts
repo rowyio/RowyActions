@@ -2,6 +2,7 @@ import * as FirebaseFirestore from "@google-cloud/firestore";
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import validateAction from "./actionValidation";
+import {RuntimeOptions} from "firebase-functions/lib/function-configuration";
 const serverTimestamp = admin.firestore.FieldValue.serverTimestamp;
 
 type ActionData = {
@@ -22,9 +23,10 @@ const callableAction = (
     callableData: ActionData;
     context: functions.https.CallableContext;
     row: FirebaseFirestore.DocumentData;
-  }) => ActionResponse | Promise<ActionResponse>
+  }) => ActionResponse | Promise<ActionResponse>,
+  runtimeOptions?: RuntimeOptions
 ) =>
-  functions.https.onCall(
+    functions.runWith(runtimeOptions ?? {}).https.onCall(
     async (
       callableData: ActionData,
       context: functions.https.CallableContext
@@ -33,7 +35,7 @@ const callableAction = (
         const db = admin.firestore();
         const user = context.auth?.token
         if(!user) throw new Error("Unauthenticated Request");
-        
+
         const {  column, schemaDocPath } = callableData;
         const ref = db.doc(callableData.ref.path);
         // fetch the row and the table schema snapshots
@@ -62,7 +64,7 @@ const callableAction = (
               .doc(user.uid)
               .get();
             const userData = userDoc?.get("user");
-    
+
             await db.doc(ref.path).update({
               [column.key]: cellValue,
               _updatedBy: userData
